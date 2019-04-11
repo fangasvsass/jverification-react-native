@@ -1,7 +1,12 @@
 package cn.jpush.reactnativejvrification;
 
 import android.Manifest;
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -14,6 +19,8 @@ import com.facebook.react.bridge.WritableMap;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.VerifyListener;
+import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
+import cn.jiguang.verifysdk.api.JVerifyUIConfig;
 import cn.jpush.reactnativejvrification.utils.AndroidUtils;
 
 public class JVerificationModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
@@ -59,11 +66,11 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
     @ReactMethod
     public void requestPermission(Callback permissionCallback) {
         if (AndroidUtils.checkPermission(getCurrentActivity(), REQUIRED_PERMISSIONS)) {
-            doCallback(permissionCallback,CODE_PERMISSION_GRANTED,MSG_PERMISSION_GRANTED);
+            doCallback(permissionCallback, CODE_PERMISSION_GRANTED, MSG_PERMISSION_GRANTED);
             return;
         }
         this.permissionCallback = permissionCallback;
-        Log.i(TAG,"requestPermission");
+        Log.i(TAG, "requestPermission");
         try {
             AndroidUtils.requestPermission(getCurrentActivity(), REQUIRED_PERMISSIONS);
             requestPermissionSended = true;
@@ -83,20 +90,90 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
         JVerificationInterface.getToken(getCurrentActivity(), new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operato) {
-                doCallback(callback,code,content);
+                doCallback(callback, code, content);
             }
         });
     }
 
     @ReactMethod
-    public void verifyNumber(ReadableMap map,final Callback callback) {
+    public void verifyNumber(ReadableMap map, final Callback callback) {
         String number = map.getString("number");
         String token = map.getString("token");
 
         JVerificationInterface.verifyNumber(getCurrentActivity(), token, number, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
-                doCallback(callback,code,content);
+                doCallback(callback, code, content);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void loginAuth(final Callback callback) {
+//        boolean verifyEnable = JVerificationInterface.checkVerifyEnable(this);
+//        if (!verifyEnable) {
+//            return;
+//        }
+        ImageButton mBtn = new ImageButton(this.getCurrentActivity());
+//        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        mLayoutParams1.setMargins(200, 0, 0, 250);
+        mBtn.setBackgroundResource(R.drawable.native_phone_number_login);
+        mBtn.setLayoutParams(mLayoutParams1);
+
+        ImageButton mBtn2 = new ImageButton(this.getCurrentActivity());
+//        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        RelativeLayout.LayoutParams mLayoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        mLayoutParams2.setMargins(0, 0, 200, 250);
+//        mLayoutParams2.setMargins(dp2Pix(this,250), dp2Pix(this,450.0f),dp2Pix(this,50),50);
+        mBtn2.setBackgroundResource(R.drawable.native_wechat_login);
+        mBtn2.setLayoutParams(mLayoutParams2);
+
+        JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
+                .setNavColor(0xffffffff)
+                .setNavReturnImgPath("native_close")
+                .setLogoImgPath("native_login_icon")
+                .setNavText("登录")
+                .setNavTextColor(0xffffffff)
+                .setLogoWidth(122)
+                .setLogoHeight(45)
+                .setLogoHidden(false)
+                .setNumberColor(0xff333333)
+                .setLogBtnText("一键登入")
+                .setLogBtnTextColor(0xffffffff)
+                .setLogBtnImgPath("native_login_bg")
+//                .setAppPrivacyOne("应用自定义服务条款一","https://www.jiguang.cn/about")
+//                .setAppPrivacyTwo("应用自定义服务条款二","https://www.jiguang.cn/about")
+                .setAppPrivacyColor(0xff666666, 0xff0085d0)
+                .setUncheckedImgPath("umcsdk_uncheck_image")
+                .setCheckedImgPath("umcsdk_check_image")
+                .setSloganTextColor(0xff999999)
+                .setLogoOffsetY(50)
+                .setNumFieldOffsetY(170)
+                .setSloganOffsetY(215)
+                .setLogBtnOffsetY(254)
+                .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
+                    @Override
+                    public void onClicked(Context context, View view) {
+                        Toast.makeText(context, "自定义的按钮1，会finish授权页", Toast.LENGTH_SHORT).show();
+                    }
+                }).addCustomView(mBtn2, false, new JVerifyUIClickCallback() {
+                    @Override
+                    public void onClicked(Context context, View view) {
+                        Toast.makeText(context, "自定义的按钮2，不会finish授权页", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setPrivacyOffsetY(30).build();
+        JVerificationInterface.setCustomUIWithConfig(uiConfig);
+//        JVerificationInterface.setLoginAuthLogo("umcsdk_mobile_logo","umcsdk_mobile_logo","umcsdk_mobile_logo");
+        JVerificationInterface.loginAuth(this.getCurrentActivity(), new VerifyListener() {
+            @Override
+            public void onResult(final int code, final String content, final String operator) {
+                doCallback(callback, code, content);
             }
         });
     }
@@ -105,9 +182,9 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
     public void onHostResume() {
         if (requestPermissionSended) {
             if (AndroidUtils.checkPermission(getCurrentActivity(), REQUIRED_PERMISSIONS)) {
-                doCallback(permissionCallback,CODE_PERMISSION_GRANTED,MSG_PERMISSION_GRANTED);
+                doCallback(permissionCallback, CODE_PERMISSION_GRANTED, MSG_PERMISSION_GRANTED);
             } else {
-                doCallback(permissionCallback,ERR_CODE_PERMISSION,ERR_MSG_PERMISSION);
+                doCallback(permissionCallback, ERR_CODE_PERMISSION, ERR_MSG_PERMISSION);
             }
         }
         requestPermissionSended = false;
@@ -124,10 +201,10 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
 
     }
 
-    private void doCallback(Callback callback, int code, String content){
+    private void doCallback(Callback callback, int code, String content) {
         WritableMap map = Arguments.createMap();
-        map.putInt("code",code);
-        map.putString("content",content);
+        map.putInt("code", code);
+        map.putString("content", content);
         callback.invoke(map);
     }
 }
