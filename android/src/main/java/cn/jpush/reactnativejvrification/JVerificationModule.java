@@ -165,7 +165,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
                         }
 
                     }
-                }).addCustomView(mBtn2, false, new JVerifyUIClickCallback() {
+                }).addCustomView(mBtn2, true, new JVerifyUIClickCallback() {
                     @Override
                     public void onClicked(Context context, View view) {
                         try {

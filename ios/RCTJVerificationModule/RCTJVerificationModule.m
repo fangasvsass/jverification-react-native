@@ -107,7 +107,13 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
 - (void)customUI:(RCTResponseSenderBlock)callback block:(resultCallBlcok)block {
     /*移动*/
     JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
-    mobileUIConfig.logoImg = [UIImage imageNamed:@"cmccLogo"];
+    mobileUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
+    mobileUIConfig.navColor= [UIColor whiteColor];
+    mobileUIConfig.barStyle = 1;
+    mobileUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
+    mobileUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
+    
     /*
      mobileUIConfig.navColor = [UIColor redColor];
      mobileUIConfig.barStyle = 0;
@@ -136,19 +142,29 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
      mobileUIConfig.sloganTextColor = [UIColor redColor];
      */
     [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
-        /*
-         //添加一个自定义label
-         UILabel *lable  = [[UILabel alloc] init];
-         lable.text = @"这是一个自定义label";
-         [lable sizeToFit];
-         lable.center = customAreaView.center;
-         [customAreaView addSubview:lable];
-         */
+        CustomButton *button = [CustomButton initButtonWithFrame:CGRectMake(50, 500, 60, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+            if (block) {
+                block(LeftButton);
+            }
+        }];
+        [customAreaView addSubview:button];
+        
+        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 60, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+            if (block) {
+                block(RightButton);
+            }
+        }];
+        [customAreaView addSubview:button2];
     }];
     
     /*联通*/
     JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
-    unicomUIConfig.logoImg = [UIImage imageNamed:@"cuccLogo"];
+    unicomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
+    unicomUIConfig.navColor= [UIColor whiteColor];
+    unicomUIConfig.barStyle = 1;
+    unicomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
+    unicomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
     /*
      unicomUIConfig.navColor = [UIColor redColor];
      unicomUIConfig.barStyle = 0;
@@ -178,6 +194,19 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
      */
     [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
         //添加自定义控件
+        CustomButton *button = [CustomButton initButtonWithFrame:CGRectMake(50, 500, 60, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+            if (block) {
+                block(LeftButton);
+            }
+        }];
+        [customAreaView addSubview:button];
+        
+        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 60, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+            if (block) {
+                block(RightButton);
+            }
+        }];
+        [customAreaView addSubview:button2];
     }];
     
     /*电信*/
@@ -231,7 +260,7 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
         }];
         [customAreaView addSubview:button];
         
-        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 74, 90) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 60, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
             if (block) {
                 block(RightButton);
             }
