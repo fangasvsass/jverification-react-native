@@ -159,12 +159,19 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
                 .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
                     @Override
                     public void onClicked(Context context, View view) {
-                        Toast.makeText(context, "自定义的按钮1，会finish授权页", Toast.LENGTH_SHORT).show();
+                        try {
+                            doCallback(callback, 8000, "");
+                        } catch (Exception e) {
+                        }
+
                     }
                 }).addCustomView(mBtn2, false, new JVerifyUIClickCallback() {
                     @Override
                     public void onClicked(Context context, View view) {
-                        Toast.makeText(context, "自定义的按钮2，不会finish授权页", Toast.LENGTH_SHORT).show();
+                        try {
+                            doCallback(callback, 9000, "");
+                        } catch (Exception e) {
+                        }
                     }
                 })
                 .setPrivacyOffsetY(30).build();
@@ -173,7 +180,10 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
         JVerificationInterface.loginAuth(this.getCurrentActivity(), new VerifyListener() {
             @Override
             public void onResult(final int code, final String content, final String operator) {
-                doCallback(callback, code, content);
+                try {
+                    doCallback(callback, code, content);
+                } catch (Exception e) {
+                }
             }
         });
     }
