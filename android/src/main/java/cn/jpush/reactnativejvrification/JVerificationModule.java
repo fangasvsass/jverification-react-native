@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -133,6 +135,18 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
         mBtn2.setBackgroundResource(R.drawable.native_wechat_login);
         mBtn2.setLayoutParams(mLayoutParams2);
 
+
+
+       ViewGroup viewGroup= (ViewGroup) getCurrentActivity().getLayoutInflater().inflate(R.layout.line,null);
+//        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        RelativeLayout.LayoutParams mLayoutParams3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        mLayoutParams3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mLayoutParams3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        mLayoutParams3.setMargins(0, 0, 0, 500);
+
+//        mLayoutParams2.setMargins(dp2Pix(this,250), dp2Pix(this,450.0f),dp2Pix(this,50),50);
+        viewGroup.setLayoutParams(mLayoutParams3);
+
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setNavColor(0xffffffff)
                 .setNavReturnImgPath("native_close")
@@ -172,6 +186,12 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
                             doCallback(callback, 9000, "");
                         } catch (Exception e) {
                         }
+                    }
+                })
+                .addCustomView(viewGroup, true, new JVerifyUIClickCallback() {
+                    @Override
+                    public void onClicked(Context context, View view) {
+
                     }
                 })
                 .setPrivacyOffsetY(30).build();
