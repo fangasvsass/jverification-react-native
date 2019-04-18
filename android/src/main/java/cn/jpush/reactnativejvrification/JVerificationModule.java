@@ -137,7 +137,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
 
 
 
-       ViewGroup viewGroup= (ViewGroup) getCurrentActivity().getLayoutInflater().inflate(R.layout.line,null);
+        ViewGroup viewGroup= (ViewGroup) getCurrentActivity().getLayoutInflater().inflate(R.layout.line,null);
 //        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         RelativeLayout.LayoutParams mLayoutParams3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mLayoutParams3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);

@@ -25,6 +25,11 @@
 #import "CustomButton.h"
 #import "JVERIFICATIONService.h"
 
+
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+
 typedef enum ButtonType {
     LeftButton = 0,
     RightButton = 1
@@ -81,15 +86,15 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
             
             NSString * type = [NSString stringWithFormat:@"%d",buttonType];
             if([type isEqual:@"0"]){
-              //验证码登入
-              NSDictionary *dic=@{@"code":@(8000),@"content":@""};
-              callback(@[dic]);
+                //验证码登入
+                NSDictionary *dic=@{@"code":@(8000),@"content":@""};
+                callback(@[dic]);
             }else{
-              //微信登入
-              NSDictionary *dic=@{@"code":@(9000),@"content":@""};
-              callback(@[dic]);
+                //微信登入
+                NSDictionary *dic=@{@"code":@(9000),@"content":@""};
+                callback(@[dic]);
             }
-
+            
             [rootVC dismissViewControllerAnimated:NO completion:nil];
         }
     }];
@@ -108,164 +113,170 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
     /*移动*/
     JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
     mobileUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    mobileUIConfig.logoWidth=112;
+    mobileUIConfig.logoHeight=42;
     mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
     mobileUIConfig.navColor= [UIColor whiteColor];
     mobileUIConfig.barStyle = 1;
     mobileUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
     mobileUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
+    mobileUIConfig.sloganOffsetY=230;
     
-    /*
-     mobileUIConfig.navColor = [UIColor redColor];
-     mobileUIConfig.barStyle = 0;
-     mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@"自定义标题"];
-     mobileUIConfig.navReturnImg = [UIImage imageNamed:@"自定义返回键"];
-     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-     button.frame = CGRectMake(0, 0, 44, 44);
-     button.backgroundColor = [UIColor greenColor];
-     mobileUIConfig.navControl = [[UIBarButtonItem alloc] initWithCustomView:button];
-     mobileUIConfig.logoWidth = 100;
-     mobileUIConfig.logoHeight = 100;
-     mobileUIConfig.logoOffsetY = 50;
-     mobileUIConfig.logoHidden = NO;
-     mobileUIConfig.logBtnText = @"自定义登录按钮文字";
-     mobileUIConfig.logoOffsetY = 100;
-     mobileUIConfig.logBtnTextColor = [UIColor redColor];
-     mobileUIConfig.numberColor = [UIColor blueColor];
-     mobileUIConfig.numFieldOffsetY = 80;
-     mobileUIConfig.uncheckedImg = [UIImage imageNamed:@"未选中图片"];
-     mobileUIConfig.checkedImg = [UIImage imageNamed:@"选中图片"];
-     mobileUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
-     mobileUIConfig.appPrivacyTwo = @[@"应用自定义服务条款2",@"https://www.jiguang.cn/about"];
-     mobileUIConfig.appPrivacyColor = @[[UIColor redColor], [UIColor blueColor]];
-     mobileUIConfig.privacyOffsetY = 20;
-     mobileUIConfig.sloganOffsetY = 70;
-     mobileUIConfig.sloganTextColor = [UIColor redColor];
-     */
     [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
-        CustomButton *button = [CustomButton initButtonWithFrame:CGRectMake(50, 500, 60, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+        CustomButton *lButton = [CustomButton initButtonWithFrame:CGRectMake(75, SCREEN_HEIGHT-300, 61, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
             if (block) {
                 block(LeftButton);
             }
         }];
-        [customAreaView addSubview:button];
+        [customAreaView addSubview:lButton];
         
-        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 60, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-300, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
             if (block) {
                 block(RightButton);
             }
         }];
-        [customAreaView addSubview:button2];
+        [customAreaView addSubview:rButton];
+        
+        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-350, SCREEN_WIDTH-50, 35}];
+        
+        
+        UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
+        childViewLeft.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+        childViewLeft.center = CGPointMake(childViewLeft.center.x, CGRectGetMidY(view.bounds));
+        [view addSubview:childViewLeft];
+        
+        
+        UIView *childViewRight = [[UIView alloc] initWithFrame:(CGRect){(SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
+        childViewRight.backgroundColor =[UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+        childViewRight.center = CGPointMake(childViewRight.center.x, CGRectGetMidY(view.bounds));
+        [view addSubview:childViewRight];
+        
+        
+        
+        UILabel *childLabel = [[UILabel alloc] init];
+        childLabel.text = @"其他登入方式";
+        childLabel.font=[childLabel.font fontWithSize:14];
+        childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
+        [childLabel sizeToFit];
+        childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
+        [view addSubview:childLabel];
+        
+        
+        view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
+        [customAreaView addSubview:view];
     }];
     
     /*联通*/
     JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
     unicomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    unicomUIConfig.logoWidth=112;
+    unicomUIConfig.logoHeight=42;
     unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
     unicomUIConfig.navColor= [UIColor whiteColor];
     unicomUIConfig.barStyle = 1;
     unicomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
     unicomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
-    /*
-     unicomUIConfig.navColor = [UIColor redColor];
-     unicomUIConfig.barStyle = 0;
-     unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@"自定义标题"];
-     unicomUIConfig.navReturnImg = [UIImage imageNamed:@"自定义返回键"];
-     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-     button.frame = CGRectMake(0, 0, 44, 44);
-     button.backgroundColor = [UIColor greenColor];
-     unicomUIConfig.navControl = [[UIBarButtonItem alloc] initWithCustomView:button];
-     unicomUIConfig.logoWidth = 100;
-     unicomUIConfig.logoHeight = 100;
-     unicomUIConfig.logoOffsetY = 50;
-     unicomUIConfig.logoHidden = NO;
-     unicomUIConfig.logBtnText = @"自定义登录按钮文字";
-     unicomUIConfig.logoOffsetY = 100;
-     unicomUIConfig.logBtnTextColor = [UIColor redColor];
-     unicomUIConfig.numberColor = [UIColor blueColor];
-     unicomUIConfig.numFieldOffsetY = 80;
-     unicomUIConfig.uncheckedImg = [UIImage imageNamed:@"未选中图片"];
-     unicomUIConfig.checkedImg = [UIImage imageNamed:@"选中图片"];
-     unicomUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
-     unicomUIConfig.appPrivacyTwo = @[@"应用自定义服务条款2",@"https://www.jiguang.cn/about"];
-     unicomUIConfig.appPrivacyColor = @[[UIColor redColor], [UIColor blueColor]];
-     unicomUIConfig.privacyOffsetY = 20;
-     unicomUIConfig.sloganOffsetY = 70;
-     unicomUIConfig.sloganTextColor = [UIColor redColor];
-     */
+    unicomUIConfig.sloganOffsetY=230;
+    
     [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
-        //添加自定义控件
-        CustomButton *button = [CustomButton initButtonWithFrame:CGRectMake(50, 500, 60, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+        CustomButton *lButton = [CustomButton initButtonWithFrame:CGRectMake(75, SCREEN_HEIGHT-300, 61, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
             if (block) {
                 block(LeftButton);
             }
         }];
-        [customAreaView addSubview:button];
+        [customAreaView addSubview:lButton];
         
-        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 60, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-300, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
             if (block) {
                 block(RightButton);
             }
         }];
-        [customAreaView addSubview:button2];
+        [customAreaView addSubview:rButton];
+        
+        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-350, SCREEN_WIDTH-50, 35}];
+        
+        
+        UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
+        childViewLeft.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+        childViewLeft.center = CGPointMake(childViewLeft.center.x, CGRectGetMidY(view.bounds));
+        [view addSubview:childViewLeft];
+        
+        
+        UIView *childViewRight = [[UIView alloc] initWithFrame:(CGRect){(SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
+        childViewRight.backgroundColor =[UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+        childViewRight.center = CGPointMake(childViewRight.center.x, CGRectGetMidY(view.bounds));
+        [view addSubview:childViewRight];
+        
+        
+        
+        UILabel *childLabel = [[UILabel alloc] init];
+        childLabel.text = @"其他登入方式";
+        childLabel.font=[childLabel.font fontWithSize:14];
+        childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
+        [childLabel sizeToFit];
+        childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
+        [view addSubview:childLabel];
+        
+        
+        view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
+        [customAreaView addSubview:view];
     }];
     
     /*电信*/
     JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
     telecomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    telecomUIConfig.logoWidth=112;
+    telecomUIConfig.logoHeight=42;
     telecomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
     telecomUIConfig.navColor= [UIColor whiteColor];
     telecomUIConfig.barStyle = 1;
     telecomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
     telecomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
-    /*
-     telecomUIConfig.navColor = [UIColor redColor];
-     telecomUIConfig.barStyle = 0;
-     telecomUIConfig.navText = [[NSAttributedString alloc] initWithString:@"自定义标题"];
-     telecomUIConfig.navReturnImg = [UIImage imageNamed:@"自定义返回键"];
-     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-     button.frame = CGRectMake(0, 0, 44, 44);
-     button.backgroundColor = [UIColor greenColor];
-     telecomUIConfig.navControl = [[UIBarButtonItem alloc] initWithCustomView:button];
-     telecomUIConfig.logoWidth = 100;
-     telecomUIConfig.logoHeight = 100;
-     telecomUIConfig.logoOffsetY = 50;
-     telecomUIConfig.logoHidden = NO;
-     telecomUIConfig.logBtnText = @"自定义登录按钮文字";
-     telecomUIConfig.logoOffsetY = 100;
-     telecomUIConfig.logBtnTextColor = [UIColor redColor];
-     telecomUIConfig.numberColor = [UIColor blueColor];
-     telecomUIConfig.numFieldOffsetY = 80;
-     telecomUIConfig.uncheckedImg = [UIImage imageNamed:@"未选中图片"];
-     telecomUIConfig.checkedImg = [UIImage imageNamed:@"选中图片"];
-     telecomUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
-     telecomUIConfig.appPrivacyTwo = @[@"应用自定义服务条款2",@"https://www.jiguang.cn/about"];
-     telecomUIConfig.appPrivacyColor = @[[UIColor redColor], [UIColor blueColor]];
-     telecomUIConfig.privacyOffsetY = 20;
-     telecomUIConfig.sloganOffsetY = 70;
-     telecomUIConfig.sloganTextColor = [UIColor redColor];
-     */
+    telecomUIConfig.sloganOffsetY=230;
+    
     [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
         
-        /*
-         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-         button.frame = CGRectMake(50, 300, 44, 44);
-         button.backgroundColor = [UIColor redColor];
-         [button addTarget:self action:@selector(buttonTouch) forControlEvents:UIControlEventTouchUpInside];
-         [customAreaView addSubview:button];
-         */
-        CustomButton *button = [CustomButton initButtonWithFrame:CGRectMake(50, 500, 60, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+        CustomButton *lButton = [CustomButton initButtonWithFrame:CGRectMake(75, SCREEN_HEIGHT-300, 61, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
             if (block) {
                 block(LeftButton);
             }
         }];
-        [customAreaView addSubview:button];
+        [customAreaView addSubview:lButton];
         
-        CustomButton *button2 = [CustomButton initButtonWithFrame:CGRectMake(250, 500, 60, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-300, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
             if (block) {
                 block(RightButton);
             }
         }];
-        [customAreaView addSubview:button2];
+        [customAreaView addSubview:rButton];
+        
+        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-350, SCREEN_WIDTH-50, 35}];
+        
+        
+        UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
+        childViewLeft.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+        childViewLeft.center = CGPointMake(childViewLeft.center.x, CGRectGetMidY(view.bounds));
+        [view addSubview:childViewLeft];
+        
+        
+        UIView *childViewRight = [[UIView alloc] initWithFrame:(CGRect){(SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
+        childViewRight.backgroundColor =[UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+        childViewRight.center = CGPointMake(childViewRight.center.x, CGRectGetMidY(view.bounds));
+        [view addSubview:childViewRight];
+        
+        
+        
+        UILabel *childLabel = [[UILabel alloc] init];
+        childLabel.text = @"其他登入方式";
+        childLabel.font=[childLabel.font fontWithSize:14];
+        childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
+        [childLabel sizeToFit];
+        childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
+        [view addSubview:childLabel];
+        
+        
+        view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
+        [customAreaView addSubview:view];
         
     }];
     

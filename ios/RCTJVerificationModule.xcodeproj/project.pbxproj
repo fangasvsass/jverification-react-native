@@ -17,7 +17,7 @@
 		478F1D7622608F8500D5A43E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 478F1D7522608F8400D5A43E /* Foundation.framework */; };
 		478F1DBC2265799A00D5A43E /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 478F1DBB2265799900D5A43E /* CustomButton.m */; };
 		62890E552190232500803A2B /* RCTJVerificationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 62890E542190232500803A2B /* RCTJVerificationModule.m */; };
-		62890E562190232500803A2B /* RCTJVerificationModule.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 62890E532190232500803A2B /* RCTJVerificationModule.h */; };
+		62890E562190232500803A2B /* RCTJVerificationModule.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 62890E532190232500803A2B /* RCTJVerificationModule.h */; };
 		62890E6721902C3B00803A2B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6621902C3B00803A2B /* AdSupport.framework */; };
 		62890E6921902C4100803A2B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6821902C4100803A2B /* CoreLocation.framework */; };
 		62890E6B21902C4600803A2B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6A21902C4600803A2B /* CFNetwork.framework */; };
@@ -33,14 +33,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		62890E4E2190232500803A2B /* CopyFiles */ = {
+		62890E4E2190232500803A2B /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				62890E562190232500803A2B /* RCTJVerificationModule.h in CopyFiles */,
+				62890E562190232500803A2B /* RCTJVerificationModule.h in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -170,7 +171,8 @@
 			buildPhases = (
 				62890E4C2190232500803A2B /* Sources */,
 				62890E4D2190232500803A2B /* Frameworks */,
-				62890E4E2190232500803A2B /* CopyFiles */,
+				62890E4E2190232500803A2B /* Copy Files */,
+				472DB7E9226739340092AC10 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -211,6 +213,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		472DB7E9226739340092AC10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		62890E4C2190232500803A2B /* Sources */ = {
