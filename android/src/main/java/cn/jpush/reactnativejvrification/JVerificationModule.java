@@ -201,7 +201,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
             @Override
             public void onResult(final int code, final String content, final String operator) {
                 try {
-                    doCallback(callback, code, content);
+                    doCallback(callback, code, content,operator);
                 } catch (Exception e) {
                 }
             }
@@ -231,10 +231,15 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
 
     }
 
-    private void doCallback(Callback callback, int code, String content) {
+    private void doCallback(Callback callback, int code, String content,String operator) {
         WritableMap map = Arguments.createMap();
         map.putInt("code", code);
-        map.putString("content", content);
+        map.putString("loginToken", content);
+        map.putString("operator", operator);
         callback.invoke(map);
+    }
+
+    private void doCallback(Callback callback, int code, String content) {
+        doCallback(callback,code,content,null);
     }
 }
