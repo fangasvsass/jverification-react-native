@@ -113,6 +113,8 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
     /*移动*/
     JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
     mobileUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    mobileUIConfig.checkedImg=[UIImage imageNamed:@"checkBox_selected"];
+    mobileUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
     mobileUIConfig.logoWidth=112;
     mobileUIConfig.logoHeight=42;
     mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
@@ -169,6 +171,8 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
     /*联通*/
     JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
     unicomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    unicomUIConfig.checkedImg=[UIImage imageNamed:@"checkBox_selected"];
+    unicomUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
     unicomUIConfig.logoWidth=112;
     unicomUIConfig.logoHeight=42;
     unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
@@ -224,6 +228,8 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
     
     /*电信*/
     JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
+    telecomUIConfig.checkedImg=[UIImage imageNamed:@"checkBox_selected"];
+    telecomUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
     telecomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
     telecomUIConfig.logoWidth=112;
     telecomUIConfig.logoHeight=42;
