@@ -235,6 +235,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
         WritableMap map = Arguments.createMap();
         map.putInt("code", code);
         map.putString("loginToken", content);
+        map.putString("content", content);
         map.putString("operator", operator);
         callback.invoke(map);
     }
