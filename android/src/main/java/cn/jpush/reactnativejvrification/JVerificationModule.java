@@ -111,33 +111,43 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
-    public void loginAuth(final Callback callback) {
+    public void loginAuth(ReadableMap map, final Callback callback) {
+        boolean isInstallWechat = map.getBoolean("isInstallWechat");
 //        boolean verifyEnable = JVerificationInterface.checkVerifyEnable(this);
 //        if (!verifyEnable) {
 //            return;
 //        }
+
+
         ImageButton mBtn = new ImageButton(this.getCurrentActivity());
 //        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        mLayoutParams1.setMargins(200, 0, 0, 250);
+        if (isInstallWechat) {
+            mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            mLayoutParams1.setMargins(200, 0, 0, 250);
+        } else {
+            mLayoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            mLayoutParams1.setMargins(0, 0, 0, 250);
+        }
         mBtn.setBackgroundResource(R.drawable.native_phone_number_login);
         mBtn.setLayoutParams(mLayoutParams1);
 
-        ImageButton mBtn2 = new ImageButton(this.getCurrentActivity());
+        ImageButton mBtn2 = null;
+        if (isInstallWechat) {
+            mBtn2 = new ImageButton(this.getCurrentActivity());
 //        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        RelativeLayout.LayoutParams mLayoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        mLayoutParams2.setMargins(0, 0, 200, 250);
+            RelativeLayout.LayoutParams mLayoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            mLayoutParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            mLayoutParams2.setMargins(0, 0, 200, 250);
 //        mLayoutParams2.setMargins(dp2Pix(this,250), dp2Pix(this,450.0f),dp2Pix(this,50),50);
-        mBtn2.setBackgroundResource(R.drawable.native_wechat_login);
-        mBtn2.setLayoutParams(mLayoutParams2);
+            mBtn2.setBackgroundResource(R.drawable.native_wechat_login);
+            mBtn2.setLayoutParams(mLayoutParams2);
+        }
 
 
-
-        ViewGroup viewGroup= (ViewGroup) getCurrentActivity().getLayoutInflater().inflate(R.layout.line,null);
+        ViewGroup viewGroup = (ViewGroup) getCurrentActivity().getLayoutInflater().inflate(R.layout.line, null);
 //        mBtn.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         RelativeLayout.LayoutParams mLayoutParams3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         mLayoutParams3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -201,7 +211,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
             @Override
             public void onResult(final int code, final String content, final String operator) {
                 try {
-                    doCallback(callback, code, content,operator);
+                    doCallback(callback, code, content, operator);
                 } catch (Exception e) {
                 }
             }
@@ -231,7 +241,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
 
     }
 
-    private void doCallback(Callback callback, int code, String content,String operator) {
+    private void doCallback(Callback callback, int code, String content, String operator) {
         WritableMap map = Arguments.createMap();
         map.putInt("code", code);
         map.putString("loginToken", content);
@@ -241,6 +251,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule implements L
     }
 
     private void doCallback(Callback callback, int code, String content) {
-        doCallback(callback,code,content,null);
+        doCallback(callback, code, content, null);
     }
 }

@@ -73,13 +73,13 @@ RCT_EXPORT_METHOD(setDebug: (nonnull NSNumber *)enable) {
     [JVERIFICATIONService setDebug: [enable boolValue]];
 }
 
-RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSenderBlock)callback) {
     __block BOOL isCallBacked = NO;
     UIViewController *rootVC = UIApplication.sharedApplication.delegate.window.rootViewController;
     while (rootVC.presentedViewController != nil) {
         rootVC = rootVC.presentedViewController;
     }
-    [self customUI:callback block:^(ButtonType buttonType) {
+    [self customUI:callback params:params block:^(ButtonType buttonType) {
         
         if (isCallBacked == NO) {
             isCallBacked = YES;
@@ -109,7 +109,7 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
     
 }
 
-- (void)customUI:(RCTResponseSenderBlock)callback block:(resultCallBlcok)block {
+- (void)customUI:(RCTResponseSenderBlock)callback  params:(NSDictionary *)params block:(resultCallBlcok)block {
     /*移动*/
     JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
     mobileUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
@@ -241,22 +241,30 @@ RCT_EXPORT_METHOD(loginAuth: (RCTResponseSenderBlock)callback) {
     telecomUIConfig.sloganOffsetY=230;
     
     [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
-        
-        CustomButton *lButton = [CustomButton initButtonWithFrame:CGRectMake(75, SCREEN_HEIGHT-300, 61, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+        CGRect rect;
+        if([[params objectForKey:@"isInstallWechat"] boolValue] == YES){
+           rect =CGRectMake(75,SCREEN_HEIGHT-SCREEN_HEIGHT/3, 61, 60);
+        }else{
+           rect=CGRectMake(SCREEN_WIDTH/2-30.5, SCREEN_HEIGHT-SCREEN_HEIGHT/3, 61, 60);
+        }
+        CustomButton *lButton = [CustomButton initButtonWithFrame:rect  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
             if (block) {
                 block(LeftButton);
             }
         }];
         [customAreaView addSubview:lButton];
         
-        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-300, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
-            if (block) {
-                block(RightButton);
-            }
-        }];
-        [customAreaView addSubview:rButton];
+         if([[params objectForKey:@"isInstallWechat"] boolValue] == YES) {
+            CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-SCREEN_HEIGHT/3, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+                if (block) {
+                    block(RightButton);
+                }
+            }];
+            [customAreaView addSubview:rButton];
+        }
         
-        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-350, SCREEN_WIDTH-50, 35}];
+        
+        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, SCREEN_WIDTH-50, 35}];
         
         
         UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];

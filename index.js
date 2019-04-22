@@ -77,7 +77,7 @@ export default class JVerification {
    *  }
    * }
    */
-  static loginAuth(callback) {
-    JVerificationModule.loginAuth(callback)
+  static loginAuth(params, callback) {
+    JVerificationModule.loginAuth(params, callback)
   }
 }
