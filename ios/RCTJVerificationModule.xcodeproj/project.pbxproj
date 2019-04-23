@@ -13,7 +13,6 @@
 		474E91BB226EF1BB00C04E4E /* account_login_sdk_noui_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474E91B5226EF1BA00C04E4E /* account_login_sdk_noui_core.framework */; };
 		474E91BC226EF1BB00C04E4E /* EAccountApiSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474E91B6226EF1BA00C04E4E /* EAccountApiSDK.framework */; };
 		474E91BD226EF1BB00C04E4E /* account_verify_sdk_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474E91B7226EF1BA00C04E4E /* account_verify_sdk_core.framework */; };
-		478F1D62226080E800D5A43E /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 478F1D61226080E700D5A43E /* libc++.1.tbd */; };
 		478F1D7622608F8500D5A43E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 478F1D7522608F8400D5A43E /* Foundation.framework */; };
 		478F1DBC2265799A00D5A43E /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 478F1DBB2265799900D5A43E /* CustomButton.m */; };
 		62890E552190232500803A2B /* RCTJVerificationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 62890E542190232500803A2B /* RCTJVerificationModule.m */; };
@@ -22,13 +21,10 @@
 		62890E6921902C4100803A2B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6821902C4100803A2B /* CoreLocation.framework */; };
 		62890E6B21902C4600803A2B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6A21902C4600803A2B /* CFNetwork.framework */; };
 		62890E6D21902C4E00803A2B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6C21902C4E00803A2B /* CoreFoundation.framework */; };
-		62890E6F21902C5600803A2B /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E6E21902C5600803A2B /* libresolv.tbd */; };
-		62890E7121902C5D00803A2B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7021902C5D00803A2B /* libz.tbd */; };
 		62890E7321902C6700803A2B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7221902C6700803A2B /* CoreTelephony.framework */; };
 		62890E7521902C6F00803A2B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7421902C6F00803A2B /* SystemConfiguration.framework */; };
 		62890E7721902C7800803A2B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7621902C7800803A2B /* Security.framework */; };
 		62890E7921902C8400803A2B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7821902C8400803A2B /* CoreGraphics.framework */; };
-		62890E7B21902C9400803A2B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7A21902C9400803A2B /* libsqlite3.tbd */; };
 		62890E7D21902C9A00803A2B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7C21902C9A00803A2B /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
@@ -84,16 +80,12 @@
 				474E91BB226EF1BB00C04E4E /* account_login_sdk_noui_core.framework in Frameworks */,
 				62890E6721902C3B00803A2B /* AdSupport.framework in Frameworks */,
 				474E91BC226EF1BB00C04E4E /* EAccountApiSDK.framework in Frameworks */,
-				62890E7B21902C9400803A2B /* libsqlite3.tbd in Frameworks */,
-				478F1D62226080E800D5A43E /* libc++.1.tbd in Frameworks */,
 				62890E7D21902C9A00803A2B /* MobileCoreServices.framework in Frameworks */,
 				62890E7921902C8400803A2B /* CoreGraphics.framework in Frameworks */,
 				62890E7721902C7800803A2B /* Security.framework in Frameworks */,
 				474E91B9226EF1BB00C04E4E /* jverification-ios-2.1.1.a in Frameworks */,
 				62890E7521902C6F00803A2B /* SystemConfiguration.framework in Frameworks */,
 				62890E7321902C6700803A2B /* CoreTelephony.framework in Frameworks */,
-				62890E7121902C5D00803A2B /* libz.tbd in Frameworks */,
-				62890E6F21902C5600803A2B /* libresolv.tbd in Frameworks */,
 				62890E6D21902C4E00803A2B /* CoreFoundation.framework in Frameworks */,
 				62890E6B21902C4600803A2B /* CFNetwork.framework in Frameworks */,
 				62890E6921902C4100803A2B /* CoreLocation.framework in Frameworks */,
