@@ -117,6 +117,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     mobileUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
     mobileUIConfig.logoWidth=112;
     mobileUIConfig.logoHeight=42;
+    mobileUIConfig.logBtnText=@"一键登入";
     mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
     mobileUIConfig.navColor= [UIColor whiteColor];
     mobileUIConfig.barStyle = 1;
@@ -175,6 +176,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     unicomUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
     unicomUIConfig.logoWidth=112;
     unicomUIConfig.logoHeight=42;
+    unicomUIConfig.logBtnText=@"一键登入";
     unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
     unicomUIConfig.navColor= [UIColor whiteColor];
     unicomUIConfig.barStyle = 1;
@@ -232,6 +234,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     telecomUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
     telecomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
     telecomUIConfig.logoWidth=112;
+    telecomUIConfig.logBtnText=@"一键登入";
     telecomUIConfig.logoHeight=42;
     telecomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
     telecomUIConfig.navColor= [UIColor whiteColor];
