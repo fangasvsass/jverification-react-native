@@ -7,7 +7,7 @@
     <View
         android:layout_gravity="center_vertical"
         android:background="#F3F3F3"
-        android:layout_height="1px"
+        android:layout_height="1dp"
         android:layout_width="100dp"
         ></View>
     <TextView
@@ -20,7 +20,7 @@
     <View
         android:layout_gravity="center_vertical"
         android:background="#F3F3F3"
-        android:layout_height="1px"
+        android:layout_height="1dp"
         android:layout_width="100dp"
         ></View>
 
