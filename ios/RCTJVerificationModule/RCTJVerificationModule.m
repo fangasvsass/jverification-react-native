@@ -126,47 +126,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     mobileUIConfig.sloganOffsetY=230;
     
     [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
-        CustomButton *lButton = [CustomButton initButtonWithFrame:CGRectMake(75, SCREEN_HEIGHT-300, 61, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
-            if (block) {
-                block(LeftButton);
-            }
-        }];
-        [customAreaView addSubview:lButton];
-        
-        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-300, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
-            if (block) {
-                block(RightButton);
-            }
-        }];
-        [customAreaView addSubview:rButton];
-        
-        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-350, SCREEN_WIDTH-50, 35}];
-        
-        
-        UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
-        childViewLeft.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
-        childViewLeft.center = CGPointMake(childViewLeft.center.x, CGRectGetMidY(view.bounds));
-        [view addSubview:childViewLeft];
-        
-        
-        UIView *childViewRight = [[UIView alloc] initWithFrame:(CGRect){(SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
-        childViewRight.backgroundColor =[UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
-        childViewRight.center = CGPointMake(childViewRight.center.x, CGRectGetMidY(view.bounds));
-        [view addSubview:childViewRight];
-        
-        
-        
-        UILabel *childLabel = [[UILabel alloc] init];
-        childLabel.text = @"其他登入方式";
-        childLabel.font=[childLabel.font fontWithSize:14];
-        childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
-        [childLabel sizeToFit];
-        childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
-        [view addSubview:childLabel];
-        
-        
-        view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
-        [customAreaView addSubview:view];
+        [self getLoginTypesView:customAreaView andParams:params andBlock:block];
     }];
     
     /*联通*/
@@ -185,47 +145,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     unicomUIConfig.sloganOffsetY=230;
     
     [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
-        CustomButton *lButton = [CustomButton initButtonWithFrame:CGRectMake(75, SCREEN_HEIGHT-300, 61, 60)  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
-            if (block) {
-                block(LeftButton);
-            }
-        }];
-        [customAreaView addSubview:lButton];
-        
-        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-300, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
-            if (block) {
-                block(RightButton);
-            }
-        }];
-        [customAreaView addSubview:rButton];
-        
-        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-350, SCREEN_WIDTH-50, 35}];
-        
-        
-        UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
-        childViewLeft.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
-        childViewLeft.center = CGPointMake(childViewLeft.center.x, CGRectGetMidY(view.bounds));
-        [view addSubview:childViewLeft];
-        
-        
-        UIView *childViewRight = [[UIView alloc] initWithFrame:(CGRect){(SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
-        childViewRight.backgroundColor =[UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
-        childViewRight.center = CGPointMake(childViewRight.center.x, CGRectGetMidY(view.bounds));
-        [view addSubview:childViewRight];
-        
-        
-        
-        UILabel *childLabel = [[UILabel alloc] init];
-        childLabel.text = @"其他登入方式";
-        childLabel.font=[childLabel.font fontWithSize:14];
-        childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
-        [childLabel sizeToFit];
-        childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
-        [view addSubview:childLabel];
-        
-        
-        view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
-        [customAreaView addSubview:view];
+        [self getLoginTypesView:customAreaView andParams:params andBlock:block];
     }];
     
     /*电信*/
@@ -244,61 +164,63 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     telecomUIConfig.sloganOffsetY=230;
     
     [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
-        CGRect rect;
-        if([[params objectForKey:@"isInstallWechat"] boolValue] == YES){
-           rect =CGRectMake(75,SCREEN_HEIGHT-SCREEN_HEIGHT/3, 61, 60);
-        }else{
-           rect=CGRectMake(SCREEN_WIDTH/2-30.5, SCREEN_HEIGHT-SCREEN_HEIGHT/3, 61, 60);
-        }
-        CustomButton *lButton = [CustomButton initButtonWithFrame:rect  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
-            if (block) {
-                block(LeftButton);
-            }
-        }];
-        [customAreaView addSubview:lButton];
-        
-         if([[params objectForKey:@"isInstallWechat"] boolValue] == YES) {
-            CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(SCREEN_WIDTH-124, SCREEN_HEIGHT-SCREEN_HEIGHT/3, 49, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
-                if (block) {
-                    block(RightButton);
-                }
-            }];
-            [customAreaView addSubview:rButton];
-        }
-        
-        
-        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, SCREEN_WIDTH-50, 35}];
-        
-        
-        UIView *childViewLeft = [[UIView alloc] initWithFrame:(CGRect){0, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
-        childViewLeft.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
-        childViewLeft.center = CGPointMake(childViewLeft.center.x, CGRectGetMidY(view.bounds));
-        [view addSubview:childViewLeft];
-        
-        
-        UIView *childViewRight = [[UIView alloc] initWithFrame:(CGRect){(SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8}];
-        childViewRight.backgroundColor =[UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
-        childViewRight.center = CGPointMake(childViewRight.center.x, CGRectGetMidY(view.bounds));
-        [view addSubview:childViewRight];
-        
-        
-        
-        UILabel *childLabel = [[UILabel alloc] init];
-        childLabel.text = @"其他登入方式";
-        childLabel.font=[childLabel.font fontWithSize:14];
-        childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
-        [childLabel sizeToFit];
-        childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), CGRectGetMidY(view.bounds));
-        [view addSubview:childLabel];
-        
-        
-        view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
-        [customAreaView addSubview:view];
-        
+        [self getLoginTypesView:customAreaView andParams:params andBlock:block];
     }];
     
     
 }
 
+- (void)getLoginTypesView:(UIView *)customAreaView andParams:(NSDictionary *)params andBlock:(resultCallBlcok)block {
+    CGFloat viewOffY = SCREEN_HEIGHT - 260;
+    if (@available(iOS 11.0, *)) {
+        viewOffY = SCREEN_HEIGHT - 280 - [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom;
+    }
+    int viewWidth = SCREEN_WIDTH - 50;
+    
+    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, viewOffY, viewWidth, 140)];
+    
+    UIView * leftLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (SCREEN_WIDTH-50)/3.2, 0.8)];
+    leftLine.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+    [view addSubview:leftLine];
+    
+    UIView * rightLine = [[UIView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-50)-(SCREEN_WIDTH-50)/3.2, 0, (SCREEN_WIDTH-50)/3.2, 0.8)];
+    rightLine.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(243/255.0 ) blue:(243/255.0 ) alpha:(1/1.0)];
+    [view addSubview:rightLine];
+    
+    UILabel *childLabel = [[UILabel alloc] init];
+    childLabel.text = @"其他登入方式";
+    childLabel.font=[childLabel.font fontWithSize:14];
+    childLabel.textColor = [UIColor colorWithRed:(152/255.0) green:(152/255.0 ) blue:(152/255.0 ) alpha:(1/1.0)];
+    [childLabel sizeToFit];
+    childLabel.center = CGPointMake(CGRectGetMidX(view.bounds), 0);
+    [view addSubview:childLabel];
+    
+    CGRect rect;
+    float x = (viewWidth - 110 - 50) / 2;
+    if([[params objectForKey:@"isInstallWechat"] boolValue] == YES) {
+        rect = CGRectMake(x, 40, 60, 60);
+    }else{
+        rect = CGRectMake(viewWidth/2-30, 40, 60, 60);
+    }
+    
+    CustomButton *lButton = [CustomButton initButtonWithFrame:rect  backgroundImage:[UIImage imageNamed:@"native_phone_number_login"] block:^{
+        if (block) {
+            block(LeftButton);
+        }
+    }];
+    [view addSubview:lButton];
+    
+    if([[params objectForKey:@"isInstallWechat"] boolValue] == YES) {
+        CustomButton *rButton = [CustomButton initButtonWithFrame:CGRectMake(x+110, 40, 50, 60) backgroundImage:[UIImage imageNamed:@"native_wechat_login"] block:^{
+            if (block) {
+                block(RightButton);
+            }
+        }];
+        [view addSubview:rButton];
+    }
+    
+    view.center = CGPointMake(CGRectGetMidX(customAreaView.bounds), view.center.y);
+    [customAreaView addSubview:view];
+}
 
 @end
