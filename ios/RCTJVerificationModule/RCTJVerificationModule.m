@@ -76,9 +76,6 @@ RCT_EXPORT_METHOD(setDebug: (nonnull NSNumber *)enable) {
 RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSenderBlock)callback) {
     __block BOOL isCallBacked = NO;
     UIViewController *rootVC = UIApplication.sharedApplication.delegate.window.rootViewController;
-    while (rootVC.presentedViewController != nil) {
-        rootVC = rootVC.presentedViewController;
-    }
     [self customUI:callback params:params block:^(ButtonType buttonType) {
         
         if (isCallBacked == NO) {
