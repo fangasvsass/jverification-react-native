@@ -14,10 +14,20 @@
 
 +(UniAuthHelper *) getInstance;
 
--(void) getAccessCode :(NSString*) appId appSecret:(NSString*) appSecret listener:(UniResultListener) listener;
+//-(void) getAccessCode :(NSString*) appId appSecret:(NSString*) appSecret listener:(UniResultListener) listener;
+//
+//-(void) getAccessToken : (NSString *) accessCode listener:(UniResultListener) listener;
+//
+//-(void) login :(NSString*) appId appSecret:(NSString*) appSecret listener:(UniResultListener) listener;
 
--(void) getAccessToken : (NSString *) accessCode listener:(UniResultListener) listener;
+-(void) initWithAppId:(NSString*) appId appSecret:(NSString*) appSecret;
 
--(void) login :(NSString*) appId appSecret:(NSString*) appSecret listener:(UniResultListener) listener;
+-(void) login :(double)timeout listener:(UniResultListener) listener;
+
+-(void) getAccessCode :(double)timeout listener:(UniResultListener) listener;
+
+-(void) getAccessToken :(double)timeout accessCode:(NSString *)accessCode listener:(UniResultListener) listener;
+
+-(void) mobileAuth :(double)timeout listener:(UniResultListener) listener;
 
 @end

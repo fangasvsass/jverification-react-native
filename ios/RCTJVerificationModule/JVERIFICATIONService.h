@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define JVER_VERSION_NUMBER 2.1.1
+#define JVER_VERSION_NUMBER 2.2.0
+
+
 
 @interface JVUIConfig : NSObject
 
@@ -20,6 +22,7 @@
  */
 
 /*----------------------------------------授权页面-----------------------------------*/
+
 
 //MARK:导航栏*************
 
@@ -35,7 +38,8 @@
 @property (nonatomic,strong) UIBarButtonItem *navControl;
 
 //MARK:图片设置************
-
+/**授权界面背景图片*/
+@property (nonatomic,strong) UIImage *authPageBackgroundImage;
 /**LOGO图片*/
 @property (nonatomic,strong) UIImage *logoImg;
 /**LOGO图片宽度*/
@@ -146,6 +150,13 @@
 + (void)getToken:(void (^)(NSDictionary *result))completion;
 
 /**
+ 获取手机号校验token。和+ (void)getToken:(void (^)(NSDictionary *result))completion;实现的功能一致
+ @param timeout 超时。单位ms,传0默认为5000ms。合法范围3000~10000
+ @param completion token相关信息。
+ */
++ (void)getToken:(NSTimeInterval)timeout completion:(void (^)(NSDictionary *result))completion;
+
+/**
  手机号校验
 
  @param entity  认证配置信息
@@ -154,11 +165,19 @@
 + (void)verifyNumber:(JVAuthEntity *)entity result:(void (^)(NSDictionary *result))completion;
 
 /**
+ 授权登录 预取号
+ @param timeout 超时。单位ms,传0默认为5000ms。合法范围3000~10000
+ @param completion 预取号结果
+ */
++ (void)preLogin:(NSTimeInterval)timeout completion:(void (^)(NSDictionary *result))completion;
+
+/**
  授权登录
  @param vc 当前控制器
  @param completion 认证结果
  */
-+ (void)getAuthorizationWithController:(UIViewController *)vc completion:(void (^)(NSDictionary *result))completion;
++ (void)getAuthorizationWithController:(UIViewController *)vc
+                            completion:(void (^)(NSDictionary *result))completion;
 
 /*!
  * @abstract 设置是否打印sdk产生的Debug级log信息, 默认为NO(不打印log)

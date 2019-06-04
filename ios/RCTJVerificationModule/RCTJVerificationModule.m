@@ -73,9 +73,23 @@ RCT_EXPORT_METHOD(setDebug: (nonnull NSNumber *)enable) {
     [JVERIFICATIONService setDebug: [enable boolValue]];
 }
 
+RCT_EXPORT_METHOD(checkVerifyEnable: (RCTResponseSenderBlock)callback){
+    if([JVERIFICATIONService checkVerifyEnable]) {
+        callback(@[@YES]);
+    }else{
+        callback(@[@NO]);
+    }
+}
+
+RCT_EXPORT_METHOD(preLogin: (NSDictionary *)params callback: (RCTResponseSenderBlock)callback) {
+    [JVERIFICATIONService preLogin:[[params objectForKey:@"timeout"] longValue] completion:^(NSDictionary *result) {
+         callback(@[result]);
+    }];
+}
+
 RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSenderBlock)callback) {
     __block BOOL isCallBacked = NO;
-    UIViewController *rootVC = UIApplication.sharedApplication.delegate.window.rootViewController;
+    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
     [self customUI:callback params:params block:^(ButtonType buttonType) {
         
         if (isCallBacked == NO) {
@@ -92,11 +106,11 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
                 callback(@[dic]);
             }
             
-            [rootVC dismissViewControllerAnimated:NO completion:nil];
+            [rootViewController dismissViewControllerAnimated:NO completion:nil];
         }
     }];
     
-    [JVERIFICATIONService getAuthorizationWithController:rootVC completion:^(NSDictionary *result) {
+    [JVERIFICATIONService getAuthorizationWithController:rootViewController completion:^(NSDictionary *result) {
         if (isCallBacked == NO) {
             callback(@[result]);
         }
