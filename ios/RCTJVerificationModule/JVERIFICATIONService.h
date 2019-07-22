@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define JVER_VERSION_NUMBER 2.2.0
+#define JVER_VERSION_NUMBER 2.3.2
 
 
 
@@ -36,6 +36,8 @@
 @property (nonatomic,strong) UIImage *navReturnImg;
 /**导航栏右侧自定义控件*/
 @property (nonatomic,strong) UIBarButtonItem *navControl;
+/**导航栏自定义（适配全屏图片）*/
+@property (nonatomic,assign) BOOL navCustom;
 
 //MARK:图片设置************
 /**授权界面背景图片*/
@@ -68,6 +70,8 @@
 
 /**手机号码字体颜色*/
 @property (nonatomic,strong) UIColor *numberColor;
+/**手机号码字体大小*/
+@property (nonatomic,assign) CGFloat numberSize;
 /**号码栏Y偏移量*/
 @property (nonatomic,assign) CGFloat numFieldOffsetY;
 
@@ -91,6 +95,9 @@
 @property (nonatomic,strong) NSArray *appPrivacyColor;
 /**隐私条款Y偏移量(注:此属性为与屏幕底部的距离)*/
 @property (nonatomic,assign) CGFloat privacyOffsetY;
+
+/**隐私条款check框默认状态 默认:NO */
+@property (nonatomic,assign) BOOL privacyState;
 
 //MARK:slogan************
 
@@ -143,6 +150,12 @@
 + (void)setupWithConfig:(JVAuthConfig *)config;
 
 /**
+ 获取初始化状态
+ * 完成YES, 未完成NO
+ */
++ (BOOL)isSetupClient;
+
+/**
  获取手机号校验token
 
  @param completion token相关信息。
@@ -172,12 +185,28 @@
 + (void)preLogin:(NSTimeInterval)timeout completion:(void (^)(NSDictionary *result))completion;
 
 /**
- 授权登录
+ 授权登录。完成后自动隐藏授权页。
  @param vc 当前控制器
  @param completion 认证结果
  */
 + (void)getAuthorizationWithController:(UIViewController *)vc
                             completion:(void (^)(NSDictionary *result))completion;
+
+/**
+ 授权登录
+ @param vc 当前控制器
+ @param hide 完成后是否自动隐藏授权页。默认yes。
+ @param completion 认证结果
+ */
++ (void)getAuthorizationWithController:(UIViewController *)vc
+                                  hide:(BOOL)hide
+                            completion:(void (^)(NSDictionary *result))completion;
+
+/*!
+ * @abstract隐藏登录页。
+ * 当授权页被拉起以后，可调用此接口隐藏授权页。当一键登录自动隐藏授权页时，不建议调用此接口
+ */
++ (void)dismissLoginController;
 
 /*!
  * @abstract 设置是否打印sdk产生的Debug级log信息, 默认为NO(不打印log)
