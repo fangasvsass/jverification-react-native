@@ -80,4 +80,11 @@ export default class JVerification {
   static loginAuth(params, callback) {
     JVerificationModule.loginAuth(params, callback)
   }
+
+  static preLogin(params, callback) {
+    JVerificationModule.preLogin(params, callback)
+  }
+  static checkVerifyEnable(callback) {
+    JVerificationModule.checkVerifyEnable(callback)
+  }
 }

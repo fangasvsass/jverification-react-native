@@ -106,7 +106,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
                 callback(@[dic]);
             }
             
-            [rootViewController dismissViewControllerAnimated:NO completion:nil];
+             [JVERIFICATIONService dismissLoginController];
         }
     }];
     
@@ -135,6 +135,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     mobileUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
     mobileUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
     mobileUIConfig.sloganOffsetY=230;
+    mobileUIConfig.privacyState=YES;
     
     [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
         [self getLoginTypesView:customAreaView andParams:params andBlock:block];
@@ -154,6 +155,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     unicomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
     unicomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
     unicomUIConfig.sloganOffsetY=230;
+    unicomUIConfig.privacyState=YES;
     
     [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
         [self getLoginTypesView:customAreaView andParams:params andBlock:block];
@@ -173,6 +175,7 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
     telecomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
     telecomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
     telecomUIConfig.sloganOffsetY=230;
+    telecomUIConfig.privacyState=YES;
     
     [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
         [self getLoginTypesView:customAreaView andParams:params andBlock:block];
