@@ -52,23 +52,6 @@ RCT_EXPORT_METHOD(getToken: (RCTResponseSenderBlock)callback) {
     }];
 }
 
-RCT_EXPORT_METHOD(verifyNumber: (NSDictionary *)params
-                  callback: (RCTResponseSenderBlock)callback) {
-    JVAuthEntity *entity = [[JVAuthEntity alloc] init];
-    
-    if (params[@"number"]) {
-        entity.number = params[@"number"];
-    }
-    
-    if (params[@"token"]) {
-        entity.token = params[@"token"];
-    }
-    
-    [JVERIFICATIONService verifyNumber:entity result:^(NSDictionary *result) {
-        callback(@[result]);
-    }];
-}
-
 RCT_EXPORT_METHOD(setDebug: (nonnull NSNumber *)enable) {
     [JVERIFICATIONService setDebug: [enable boolValue]];
 }
@@ -82,10 +65,20 @@ RCT_EXPORT_METHOD(checkVerifyEnable: (RCTResponseSenderBlock)callback){
 }
 
 RCT_EXPORT_METHOD(preLogin: (NSDictionary *)params callback: (RCTResponseSenderBlock)callback) {
-    [JVERIFICATIONService preLogin:[[params objectForKey:@"timeout"] longValue] completion:^(NSDictionary *result) {
-         callback(@[result]);
+    //预取号
+    if (![JVERIFICATIONService isSetupClient]) {
+        callback(@[@NO]);
+        return;
+    }
+    [JVERIFICATIONService preLogin:[[params objectForKey:@"timeout"] longValue]  completion:^(NSDictionary *result) {
+        callback(@[result]);
     }];
 }
+
+RCT_EXPORT_METHOD(clearPreloginCache) {
+    [JVERIFICATIONService clearPreLoginCache];
+}
+
 
 RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSenderBlock)callback) {
     __block BOOL isCallBacked = NO;
@@ -105,12 +98,11 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
                 NSDictionary *dic=@{@"code":@(9000),@"content":@""};
                 callback(@[dic]);
             }
-            
-             [JVERIFICATIONService dismissLoginController];
         }
+        [JVERIFICATIONService dismissLoginController];
     }];
     
-    [JVERIFICATIONService getAuthorizationWithController:rootViewController completion:^(NSDictionary *result) {
+    [JVERIFICATIONService getAuthorizationWithController:rootViewController hide:YES completion:^(NSDictionary *result) {
         if (isCallBacked == NO) {
             callback(@[result]);
         }

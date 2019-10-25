@@ -87,4 +87,8 @@ export default class JVerification {
   static checkVerifyEnable(callback) {
     JVerificationModule.checkVerifyEnable(callback)
   }
+
+  static clearPreloginCache() {
+    JVerificationModule.clearPreloginCache()
+  }
 }
