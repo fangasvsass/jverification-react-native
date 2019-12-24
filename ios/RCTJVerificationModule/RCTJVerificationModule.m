@@ -26,6 +26,7 @@
 #import "JVERIFICATIONService.h"
 
 
+
 #define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 
 #define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
@@ -51,6 +52,16 @@ RCT_EXPORT_METHOD(getToken: (RCTResponseSenderBlock)callback) {
         callback(@[result]);
     }];
 }
+
+RCT_EXPORT_METHOD(initClient: (RCTResponseSenderBlock)callback) {
+    JVAuthConfig *cf = [[JVAuthConfig alloc] init];
+    cf.authBlock = ^(NSDictionary *result) {
+        callback(@[result]);
+    };
+    cf.appKey = @"b9c16825f136f7868ea0b907";
+    [JVERIFICATIONService setupWithConfig:cf];
+}
+
 
 RCT_EXPORT_METHOD(setDebug: (nonnull NSNumber *)enable) {
     [JVERIFICATIONService setDebug: [enable boolValue]];

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define JVER_VERSION_NUMBER 2.5.1
+#define JVER_VERSION_NUMBER 2.5.2
 
 
 /**
@@ -87,6 +87,8 @@ typedef NS_ENUM(NSUInteger, JVLayoutItem) {
 @property (nonatomic,assign) UIBarStyle barStyle DEPRECATED_MSG_ATTRIBUTE("Please use preferredStatusBarStyle");
 /**授权页 preferred status bar style，取代barStyle参数 */
 @property (nonatomic,assign) UIStatusBarStyle preferredStatusBarStyle;
+/**协议页 preferred status bar style，取代barStyle参数 */
+@property (nonatomic,assign) UIStatusBarStyle agreementPreferredStatusBarStyle;
 /**导航栏标题*/
 @property (nonatomic,copy) NSAttributedString *navText;
 /**导航栏默认返回按钮隐藏，默认不隐藏*/
@@ -148,6 +150,7 @@ typedef NS_ENUM(NSUInteger, JVLayoutItem) {
 @property (nonatomic,strong) UIColor *logBtnTextColor;
 /**登录按钮背景图片添加到数组(顺序如下)
  @[激活状态的图片,失效状态的图片,高亮状态的图片]
+ 注意:当customPrivacyAlertViewBlock不为空，并且隐私栏为选中时，失效状态的图片设置无效
  */
 @property (nonatomic,copy) NSArray *logBtnImgs;
 
@@ -216,6 +219,7 @@ typedef NS_ENUM(NSUInteger, JVLayoutItem) {
  当自定义Alert view,当隐私条款未选中时,点击登录按钮时回调
  当此参数存在时,未选中隐私条款的情况下，登录按钮可以被点击
  block内部参数为自定义Alert view可被添加的控制器，详细用法可参见示例demo
+ 注意：当此参数不为空并且隐私栏为选中的情况下，logBtnImgs失效状态图片设置无效
  */
 @property (nonatomic,copy) void(^customPrivacyAlertViewBlock)(UIViewController * vc);
 
@@ -280,14 +284,24 @@ typedef NS_ENUM(NSUInteger, JVLayoutItem) {
 
 /**协议页导航栏背景颜色*/
 @property (nonatomic, strong) UIColor *agreementNavBackgroundColor;
-/*协议页导航栏标题*/
+/*授权页点击运营商默认协议，进入协议页时, 协议页自定义导航栏标题*/
 @property (nonatomic, strong) NSAttributedString *agreementNavText;
+/*授权页点击自定义协议1，进入协议页时, 协议页自定义导航栏标题*/
+@property (nonatomic, strong) NSAttributedString *firstPrivacyAgreementNavText;
+/*授权页点击自定义协议2，进入协议页时, 协议页自定义导航栏标题*/
+@property (nonatomic, strong) NSAttributedString *secondPrivacyAgreementNavText;
 /*协议页导航栏返回按钮图片*/
 @property (nonatomic, strong) UIImage *agreementNavReturnImage;
 
 /**授权页弹出方式,
  弹窗模式下不支持 UIModalTransitionStylePartialCurl*/
-@property (nonatomic,assign) UIModalTransitionStyle  modalTransitionStyle; 
+@property (nonatomic,assign) UIModalTransitionStyle  modalTransitionStyle;
+
+/*关闭授权页是否有动画。默认YES,有动画。参数仅作用于以下两种情况：
+ 1、一键登录接口设置登录完成后，自动关闭授权页
+ 2、用户点击授权页关闭按钮，关闭授权页
+ */
+@property (nonatomic, assign) BOOL dismissAnimationFlag;
 @end
 
 
@@ -331,8 +345,8 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
 
 
 /**
- 获取初始化状态
- * 成功YES, 失败NO
+ 初始化过程是否完成
+ * 完成YES, 未完成NO
  */
 + (BOOL)isSetupClient;
 
@@ -345,14 +359,14 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
 
 /**
  获取手机号校验token。和+ (void)getToken:(void (^)(NSDictionary *result))completion;实现的功能一致
- @param timeout 超时。单位ms,传0默认为5000ms。合法范围3000~10000
+ @param timeout 超时。单位ms,默认为5000ms。合法范围(0,10000]
  @param completion token相关信息。
  */
 + (void)getToken:(NSTimeInterval)timeout completion:(void (^)(NSDictionary *result))completion;
 
 /**
  授权登录 预取号
- @param timeout 超时。单位ms,传0默认为5000ms。合法范围3000~10000
+ @param timeout 超时。单位ms,默认为5000ms。合法范围(0,10000]
  @param completion 预取号结果
  */
 + (void)preLogin:(NSTimeInterval)timeout completion:(void (^)(NSDictionary *result))completion;
@@ -360,7 +374,7 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
 /**
  授权登录。完成后自动隐藏授权页。
  @param vc 当前控制器
- @param completion 认证结果
+ @param completion 登录结果
  */
 + (void)getAuthorizationWithController:(UIViewController *)vc
                             completion:(void (^)(NSDictionary *result))completion;
@@ -369,7 +383,7 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
  授权登录
  @param vc 当前控制器
  @param hide 完成后是否自动隐藏授权页。
- @param completion 认证结果
+ @param completion 登录结果
  */
 + (void)getAuthorizationWithController:(UIViewController *)vc
                                   hide:(BOOL)hide
@@ -380,7 +394,7 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
  授权登录
  @param vc 当前控制器
  @param hide 完成后是否自动隐藏授权页。
- @param completion 认证结果
+ @param completion 登录结果
  @parm  actionBlock 授权页事件触发回调。 type事件类型，content事件描述。详细见文档
  */
 + (void)getAuthorizationWithController:(UIViewController *)vc
@@ -388,11 +402,35 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
                             completion:(void (^)(NSDictionary *result))completion
                            actionBlock:(void(^)(NSInteger type, NSString *content))actionBlock;
 
+
+/**
+ 授权登录
+ @param vc 当前控制器
+ @param hide 完成后是否自动隐藏授权页。
+ @param animationFlag 拉起授权页时是否需要动画效果，默认YES
+ @param timeout 超时。单位毫秒，合法范围是(0,30000]，默认值为10000。此参数同时作用于拉起授权页超时 ，以及点击授权页登录按钮获取LoginToken超时
+ @param completion 登录结果
+ @parm  actionBlock 授权页事件触发回调。 type事件类型，content事件描述。详细见文档
+ */
++ (void)getAuthorizationWithController:(UIViewController *)vc
+                                  hide:(BOOL)hide
+                              animated:(BOOL)animationFlag
+                               timeout:(NSTimeInterval)timeout
+                            completion:(void (^)(NSDictionary *result))completion
+                           actionBlock:(void(^)(NSInteger type, NSString *content))actionBlock;
+
 /*!
  * @abstract隐藏登录页。
  * 当授权页被拉起以后，可调用此接口隐藏授权页。当一键登录自动隐藏授权页时，不建议调用此接口
  */
-+ (void)dismissLoginController;
++ (void)dismissLoginController __attribute__((deprecated("JVerification 2.5.2 deprecated, Use +dismissLoginControllerAnimated:completion: instead")));
+
+/**
+隐藏登录页.当授权页被拉起以后，可调用此接口隐藏授权页。当一键登录自动隐藏授权页时，不建议调用此接口
+@param flag 隐藏时是否需要动画
+@param completion 授权页隐藏完成后回调。
+*/
++ (void)dismissLoginControllerAnimated: (BOOL)flag completion: (void (^)(void))completion;
 
 /*!
  * @abstract 设置是否打印sdk产生的Debug级log信息, 默认为NO(不打印log)
@@ -405,8 +443,8 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
 + (void)setDebug:(BOOL)enable;
 
 /*!
- * @abstract 判断当前手机网络环境是否可以进行认证
- * 可以认证返回YES, 不能返回NO
+ * @abstract 判断当前手机网络环境是否支持认证
+ * YES 支持, NO 不支持
  */
 + (BOOL)checkVerifyEnable;
 
@@ -418,13 +456,13 @@ DEPRECATED_MSG_ATTRIBUTE("Please use JVUIConfig") @interface JVTelecomUIConfig :
 
 /**
  自定义登录页UI样式参数
- @param UIConfig 自定义UI设置
+ @param UIConfig 自定义UI设置。仅使用JVUIConfig类型对象
  */
 + (void)customUIWithConfig:(JVUIConfig *)UIConfig;
 
 /**
  自定义登录页UI样式参数
- @param UIConfig  UIConfig对象实例
+ @param UIConfig  UIConfig对象实例。仅使用JVUIConfig类型对象
  @param customViewsBlk 添加自定义视图block
 */
 + (void)customUIWithConfig:(JVUIConfig *)UIConfig customViews:(void(^)(UIView *customAreaView))customViewsBlk;
