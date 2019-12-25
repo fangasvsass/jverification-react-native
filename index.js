@@ -1,6 +1,6 @@
-import { DeviceEventEmitter, NativeModules, Platform } from 'react-native'
+import { DeviceEventEmitter, NativeModules, Platform } from "react-native";
 
-const JVerificationModule = NativeModules.JVerificationModule
+const JVerificationModule = NativeModules.JVerificationModule;
 
 export default class JVerification {
   /**
@@ -13,7 +13,7 @@ export default class JVerification {
    * }
    */
   static init(params) {
-    JVerificationModule.setup(params)
+    JVerificationModule.setup(params);
   }
 
   /**
@@ -26,7 +26,7 @@ export default class JVerification {
    * }
    */
   static getToken(callback) {
-    JVerificationModule.getToken(callback)
+    JVerificationModule.getToken(callback);
   }
 
   /**
@@ -43,7 +43,7 @@ export default class JVerification {
    * }
    */
   static verifyNumber(params, callback) {
-    JVerificationModule.verifyNumber(params, callback)
+    JVerificationModule.verifyNumber(params, callback);
   }
 
   /**
@@ -51,7 +51,7 @@ export default class JVerification {
    * @param {boolean} enable
    */
   static setDebug(enable) {
-    JVerificationModule.setDebug(enable)
+    JVerificationModule.setDebug(enable);
   }
 
   /**
@@ -64,8 +64,8 @@ export default class JVerification {
    * }
    */
   static requestPermission(callback) {
-    if (Platform.OS == 'android') {
-      JVerificationModule.requestPermission(callback)
+    if (Platform.OS == "android") {
+      JVerificationModule.requestPermission(callback);
     }
   }
 
@@ -78,17 +78,21 @@ export default class JVerification {
    * }
    */
   static loginAuth(params, callback) {
-    JVerificationModule.loginAuth(params, callback)
+    JVerificationModule.loginAuth(params, callback);
   }
 
   static preLogin(params, callback) {
-    JVerificationModule.preLogin(params, callback)
+    JVerificationModule.preLogin(params, callback);
   }
   static checkVerifyEnable(callback) {
-    JVerificationModule.checkVerifyEnable(callback)
+    JVerificationModule.checkVerifyEnable(callback);
   }
 
   static clearPreloginCache() {
-    JVerificationModule.clearPreloginCache()
+    JVerificationModule.clearPreloginCache();
+  }
+
+  static initClient(key, callback) {
+    JVerificationModule.initClient(key, callback);
   }
 }

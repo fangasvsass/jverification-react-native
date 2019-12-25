@@ -53,12 +53,12 @@ RCT_EXPORT_METHOD(getToken: (RCTResponseSenderBlock)callback) {
     }];
 }
 
-RCT_EXPORT_METHOD(initClient: (RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(initClient:(NSString *)key callback:(RCTResponseSenderBlock)callback) {
     JVAuthConfig *cf = [[JVAuthConfig alloc] init];
     cf.authBlock = ^(NSDictionary *result) {
         callback(@[result]);
     };
-    cf.appKey = @"b9c16825f136f7868ea0b907";
+    cf.appKey = key;
     [JVERIFICATIONService setupWithConfig:cf];
 }
 
