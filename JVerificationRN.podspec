@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source_files    = 'ios/RCTJVerificationModule/*.{h,m}'
   s.preserve_paths  = "*.js"
   s.weak_frameworks = 'UserNotifications'
-  s.dependency 'JVerification', '~> 2.5.4'
+  s.dependency 'JVerification', '~> 2.6.6'
   s.dependency 'React'
 end
