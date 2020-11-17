@@ -124,65 +124,38 @@ RCT_EXPORT_METHOD(loginAuth: (NSDictionary *)params callback: (RCTResponseSender
 }
 
 - (void)customUI:(RCTResponseSenderBlock)callback  params:(NSDictionary *)params block:(resultCallBlcok)block {
-    /*移动*/
-    JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
-    mobileUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
-    mobileUIConfig.checkedImg=[UIImage imageNamed:@"checkBox_selected"];
-    mobileUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
-    mobileUIConfig.logoWidth=112;
-    mobileUIConfig.logoHeight=42;
-    mobileUIConfig.logBtnText=@"一键登入";
-    mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
-    mobileUIConfig.navColor= [UIColor whiteColor];
-    mobileUIConfig.barStyle = 1;
-    mobileUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
-    mobileUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
-    mobileUIConfig.sloganOffsetY=230;
-    mobileUIConfig.privacyState=YES;
     
-    [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
+    JVUIConfig *config = [[JVUIConfig alloc] init];
+    config.navReturnHidden = NO;
+    config.logoImg = [UIImage imageNamed:@"native_login_icon"];
+    config.logoWidth=112;
+    config.logoHeight=42;
+    config.logBtnText=@"一键登入";
+    config.navText = [[NSAttributedString alloc] initWithString:@""];
+    config.navColor= [UIColor whiteColor];
+    config.barStyle = 1;
+    config.navReturnImg = [UIImage imageNamed:@"close"];
+    config.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
+    config.sloganOffsetY=230;
+    config.privacyState=YES;
+    config.checkViewHidden=YES;
+    config.agreementNavReturnImage = [UIImage imageNamed:@"back"];
+    config.agreementNavBackgroundColor=[UIColor whiteColor];
+    config.agreementNavTextColor=[UIColor colorWithRed:36.0/255.0 green:36.0/255.0 blue:36.0/255.0 alpha:1.0];
+    
+    CGFloat spacing =  20 + 5 + 5;
+    JVLayoutConstraint *privacyConstraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeLeft multiplier:1 constant:spacing];
+     JVLayoutConstraint *privacyConstraintX2 = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeRight multiplier:1 constant:-spacing];
+     JVLayoutConstraint *privacyConstraintY = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeBottom multiplier:1 constant:-10];
+     JVLayoutConstraint *privacyConstraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:50];
+     config.privacyConstraints = @[privacyConstraintX,privacyConstraintX2,privacyConstraintY,privacyConstraintH];
+     config.privacyHorizontalConstraints = config.privacyConstraints;
+
+    
+    [JVERIFICATIONService customUIWithConfig:config customViews:^(UIView *customAreaView) {
         [self getLoginTypesView:customAreaView andParams:params andBlock:block];
     }];
-    
-    /*联通*/
-    JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
-    unicomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
-    unicomUIConfig.checkedImg=[UIImage imageNamed:@"checkBox_selected"];
-    unicomUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
-    unicomUIConfig.logoWidth=112;
-    unicomUIConfig.logoHeight=42;
-    unicomUIConfig.logBtnText=@"一键登入";
-    unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
-    unicomUIConfig.navColor= [UIColor whiteColor];
-    unicomUIConfig.barStyle = 1;
-    unicomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
-    unicomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
-    unicomUIConfig.sloganOffsetY=230;
-    unicomUIConfig.privacyState=YES;
-    
-    [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
-        [self getLoginTypesView:customAreaView andParams:params andBlock:block];
-    }];
-    
-    /*电信*/
-    JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
-    telecomUIConfig.checkedImg=[UIImage imageNamed:@"checkBox_selected"];
-    telecomUIConfig.uncheckedImg=[UIImage imageNamed:@"checkBox_unSelected"];
-    telecomUIConfig.logoImg = [UIImage imageNamed:@"native_login_icon"];
-    telecomUIConfig.logoWidth=112;
-    telecomUIConfig.logBtnText=@"一键登入";
-    telecomUIConfig.logoHeight=42;
-    telecomUIConfig.navText = [[NSAttributedString alloc] initWithString:@""];
-    telecomUIConfig.navColor= [UIColor whiteColor];
-    telecomUIConfig.barStyle = 1;
-    telecomUIConfig.navReturnImg = [UIImage imageNamed:@"native_close"];
-    telecomUIConfig.logBtnImgs= @[[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"],[UIImage imageNamed:@"native_login_bg"]];
-    telecomUIConfig.sloganOffsetY=230;
-    telecomUIConfig.privacyState=YES;
-    
-    [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
-        [self getLoginTypesView:customAreaView andParams:params andBlock:block];
-    }];
+
     
     
 }
